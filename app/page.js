@@ -2,7 +2,14 @@
 
 import { useState, useEffect, useRef, useCallback } from 'react';
 import { motion, useScroll, useTransform, AnimatePresence, useInView } from 'framer-motion';
-import { X, ArrowRight, Menu, Loader2, Lock, Users, Eye, Play, Instagram, Youtube, Mail, Film, Star, Clapperboard } from 'lucide-react';
+import { X, ArrowRight, Menu, Lock, Users, Eye, Play, Instagram, Youtube, Mail, Film, Star, Clapperboard, Camera } from 'lucide-react';
+
+// Airtable Form Link
+const AIRTABLE_FORM_URL = 'https://airtable.com/apphjvez7CWW1sFGK/pagJAGsHee4geTyHR/form';
+
+const openBookingForm = () => {
+  window.open(AIRTABLE_FORM_URL, '_blank');
+};
 
 // Film Images
 const IMAGES = {
@@ -138,8 +145,8 @@ const Navigation = ({ onMenuClick, onRequestAccess }) => {
         </motion.div>
         <div className="flex items-center gap-6">
           <motion.button initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.6 }}
-            onClick={onRequestAccess} className="hidden md:flex items-center gap-2 text-xs tracking-[0.2em] opacity-60 hover:opacity-100 hover-line transition-opacity" data-hover>
-            <Lock className="w-3 h-3" /> REQUEST ACCESS
+            onClick={openBookingForm} className="hidden md:flex items-center gap-2 text-xs tracking-[0.2em] opacity-60 hover:opacity-100 hover-line transition-opacity" data-hover>
+            <Film className="w-3 h-3" /> BOOK FREE PREMIERE
           </motion.button>
           <motion.button initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.7 }}
             onClick={onMenuClick} data-hover>
@@ -164,7 +171,7 @@ const FullScreenMenu = ({ isOpen, onClose, onRequestAccess, onScrollTo }) => (
             { label: 'Gallery', action: () => { onScrollTo('gallery'); onClose(); } },
             { label: 'Cast & Crew', action: () => { onScrollTo('cast'); onClose(); } },
             { label: 'Trailer', action: () => { onScrollTo('trailer'); onClose(); } },
-            { label: 'Request Access', action: () => { onRequestAccess(); onClose(); } },
+            { label: 'Book Free Premiere', action: () => { openBookingForm(); onClose(); } },
           ].map((item, i) => (
             <motion.div key={item.label} initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 + i * 0.08 }}>
               <button onClick={item.action} data-hover
@@ -234,10 +241,10 @@ const HeroSection = ({ onRequestAccess }) => {
 
         {/* CTA */}
         <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 1.6 }} className="mt-14">
-          <button onClick={() => { onRequestAccess(); trackEvent('cta_click', { location: 'hero' }); }} data-hover
+          <button onClick={() => { openBookingForm(); trackEvent('cta_click', { location: 'hero' }); }} data-hover
             className="group cta-premium inline-flex items-center gap-3 px-10 py-5 border border-[#C2A36B]/50 hover:border-[#C2A36B] hover:bg-[#C2A36B]/10 transition-all duration-500 pulse-glow">
-            <Lock className="w-4 h-4 text-[#C2A36B]" />
-            <span className="font-inter text-sm tracking-[0.2em]">REQUEST PREMIERE ACCESS</span>
+            <Film className="w-4 h-4 text-[#C2A36B]" />
+            <span className="font-inter text-sm tracking-[0.2em]">BOOK FREE PREMIERE</span>
             <ArrowRight className="w-4 h-4 group-hover:translate-x-2 transition-transform duration-300" />
           </button>
         </motion.div>
@@ -394,7 +401,7 @@ const TrailerSection = ({ onRequestAccess }) => {
             <motion.button
               whileHover={{ scale: 1.1 }}
               whileTap={{ scale: 0.95 }}
-              onClick={() => { onRequestAccess(); trackEvent('trailer_play_click'); }}
+              onClick={() => { openBookingForm(); trackEvent('trailer_play_click'); }}
               className="w-20 h-20 md:w-24 md:h-24 rounded-full border-2 border-[#C2A36B] flex items-center justify-center bg-[#C2A36B]/10 backdrop-blur-sm pulse-glow"
               data-hover>
               <Play className="w-8 h-8 md:w-10 md:h-10 text-[#C2A36B] ml-1" />
@@ -405,7 +412,7 @@ const TrailerSection = ({ onRequestAccess }) => {
           <div className="absolute bottom-8 left-8 z-10">
             <span className="font-inter text-[10px] tracking-[0.3em] text-[#C2A36B]">OFFICIAL TEASER</span>
             <p className="font-playfair text-2xl md:text-3xl font-bold mt-2">Watch the Trailer</p>
-            <p className="font-inter text-xs opacity-40 mt-1">Available at premiere • Request access now</p>
+            <p className="font-inter text-xs opacity-40 mt-1">Available at premiere • Book your free seat now</p>
           </div>
 
           {/* Gold corner accents */}
@@ -423,10 +430,10 @@ const CastCrewSection = () => {
   const isInView = useInView(ref, { once: true, margin: '-15%' });
 
   const crew = [
-    { role: 'Director', name: 'Coming Soon', icon: Clapperboard },
-    { role: 'Producer', name: 'Coming Soon', icon: Star },
-    { role: 'Lead Actor', name: 'Coming Soon', icon: Film },
-    { role: 'Cinematographer', name: 'Coming Soon', icon: Eye },
+    { role: 'Director', name: 'Saiteja', icon: Clapperboard },
+    { role: 'Director', name: 'Sravanth', icon: Clapperboard },
+    { role: 'Lead Actor', name: 'Yashu', icon: Star },
+    { role: 'DOP', name: 'Pavan', icon: Camera },
   ];
 
   return (
@@ -445,7 +452,7 @@ const CastCrewSection = () => {
           <motion.h2 initial={{ opacity: 0, y: 30 }} animate={isInView ? { opacity: 1, y: 0 } : {}} transition={{ delay: 0.1, duration: 0.8 }}
             className="font-playfair text-4xl md:text-6xl font-bold">The Minds Behind</motion.h2>
           <motion.p initial={{ opacity: 0 }} animate={isInView ? { opacity: 0.4 } : {}} transition={{ delay: 0.3 }}
-            className="font-inter text-sm mt-4 tracking-wide">Revealed at premiere</motion.p>
+            className="font-inter text-sm mt-4 tracking-wide">The creative forces behind the film</motion.p>
         </div>
 
         {/* Crew Cards */}
@@ -504,9 +511,9 @@ const FinalRevealSection = ({ onRequestAccess }) => {
         <motion.div initial={{ opacity: 0 }} animate={isInView ? { opacity: 1 } : {}} transition={{ delay: 0.8 }}
           className="mt-16 space-y-8">
           <p className="font-inter text-sm opacity-40">You don't know the full story.</p>
-          <button onClick={() => { onRequestAccess(); trackEvent('cta_click', { location: 'final_reveal' }); }} data-hover
+          <button onClick={() => { openBookingForm(); trackEvent('cta_click', { location: 'final_reveal' }); }} data-hover
             className="cta-premium inline-flex items-center gap-3 bg-[#C2A36B] text-[#0A0A0A] px-12 py-5 font-playfair text-lg hover:bg-[#E8D5B0] transition-all duration-300 glitch-hover">
-            <Lock className="w-5 h-5" /> REQUEST PREMIERE ACCESS
+            <Film className="w-5 h-5" /> BOOK FREE PREMIERE
           </button>
         </motion.div>
       </div>
@@ -543,7 +550,7 @@ const FOMOSection = ({ count, onRequestAccess }) => {
               <Users className="w-5 h-5 text-[#C2A36B]" />
               <span className="font-playfair text-4xl md:text-5xl font-bold text-[#C2A36B]">{displayCount.toLocaleString()}</span>
             </div>
-            <p className="font-inter text-[10px] tracking-[0.2em] opacity-40">ALREADY REQUESTED ACCESS</p>
+            <p className="font-inter text-[10px] tracking-[0.2em] opacity-40">ALREADY BOOKED SEATS</p>
           </motion.div>
 
           <motion.div initial={{ opacity: 0, y: 20 }} animate={isInView ? { opacity: 1, y: 0 } : {}} transition={{ delay: 0.2 }}
@@ -594,8 +601,8 @@ const Footer = ({ onRequestAccess }) => (
         <div className="text-center">
           <p className="font-inter text-[10px] tracking-[0.3em] text-[#C2A36B] mb-4">QUICK LINKS</p>
           <div className="space-y-2">
-            {['The Story', 'Gallery', 'Cast & Crew', 'Request Access'].map(link => (
-              <button key={link} onClick={link === 'Request Access' ? onRequestAccess : undefined}
+            {['The Story', 'Gallery', 'Cast & Crew', 'Book Free Premiere'].map(link => (
+              <button key={link} onClick={link === 'Book Free Premiere' ? openBookingForm : undefined}
                 className="block w-full font-inter text-sm opacity-40 hover:opacity-100 hover:text-[#C2A36B] transition-all" data-hover>
                 {link}
               </button>
@@ -620,9 +627,9 @@ const Footer = ({ onRequestAccess }) => (
       <div className="gold-separator mb-8" />
       <div className="flex flex-col md:flex-row items-center justify-between gap-4">
         <p className="font-inter text-[10px] opacity-20">© 2025 The Last Puff. The story remains untold.</p>
-        <button onClick={onRequestAccess}
+        <button onClick={openBookingForm}
           className="font-inter text-xs tracking-[0.2em] opacity-40 hover:opacity-100 hover:text-[#C2A36B] hover-line transition-all" data-hover>
-          REQUEST ACCESS
+          BOOK FREE PREMIERE
         </button>
         <p className="font-inter text-[10px] opacity-20">Hyderabad, India</p>
       </div>
@@ -794,7 +801,6 @@ const STORY_SECTIONS = [
 
 // ===== MAIN PAGE =====
 export default function HomePage() {
-  const [isModalOpen, setIsModalOpen] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [accessCount, setAccessCount] = useState(1247);
 
@@ -815,10 +821,10 @@ export default function HomePage() {
       <CustomCursor />
       <div className="grain" />
 
-      <Navigation onMenuClick={() => setIsMenuOpen(true)} onRequestAccess={() => setIsModalOpen(true)} />
-      <FullScreenMenu isOpen={isMenuOpen} onClose={() => setIsMenuOpen(false)} onRequestAccess={() => setIsModalOpen(true)} onScrollTo={scrollTo} />
+      <Navigation onMenuClick={() => setIsMenuOpen(true)} onRequestAccess={openBookingForm} />
+      <FullScreenMenu isOpen={isMenuOpen} onClose={() => setIsMenuOpen(false)} onRequestAccess={openBookingForm} onScrollTo={scrollTo} />
 
-      <HeroSection onRequestAccess={() => setIsModalOpen(true)} />
+      <HeroSection onRequestAccess={openBookingForm} />
 
       <div id="story">
         {STORY_SECTIONS.map((section) => (
@@ -827,13 +833,11 @@ export default function HomePage() {
       </div>
 
       <GallerySection />
-      <TrailerSection onRequestAccess={() => setIsModalOpen(true)} />
+      <TrailerSection onRequestAccess={openBookingForm} />
       <CastCrewSection />
-      <FOMOSection count={accessCount} onRequestAccess={() => setIsModalOpen(true)} />
-      <FinalRevealSection onRequestAccess={() => setIsModalOpen(true)} />
-      <Footer onRequestAccess={() => setIsModalOpen(true)} />
-
-      <AccessModal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} />
+      <FOMOSection count={accessCount} onRequestAccess={openBookingForm} />
+      <FinalRevealSection onRequestAccess={openBookingForm} />
+      <Footer onRequestAccess={openBookingForm} />
     </main>
   );
 }
